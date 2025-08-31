@@ -27,16 +27,9 @@ app.MapGet("/weatherforecast", () =>
 // This endpoint is the way Joydig wants to handle file uploads
 app.MapPost("/upload", async (IFormFile file) =>
 {
-    if (file.Length > 0)
-    {
-        var filePath = Path.Combine(Path.GetTempPath(), file.FileName);
-        using (var stream = System.IO.File.Create(filePath))
-        {
-            await file.CopyToAsync(stream);
-        }
-        return Results.Ok(new { file.FileName, file.Length, filePath });
-    }
-    return Results.BadRequest("No file uploaded.");
+    var tempFile = Path.GetTempFileName();
+    using var fileStream = File.OpenWrite(tempFile);
+    await file.CopyToAsync(fileStream);
 });
 
 app.Run();
