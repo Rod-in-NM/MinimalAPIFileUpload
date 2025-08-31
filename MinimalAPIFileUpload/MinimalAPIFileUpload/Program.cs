@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Antiforgery;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -42,6 +44,12 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
         using var fileStream = File.OpenWrite(tempFile);
         await file.CopyToAsync(fileStream);
     }
+});
+
+app.MapGet("/generate-antiforgery-token", (IAntiforgery antiforgery, HttpContext httpContext) =>
+{
+    var tokens = antiforgery.GetAndStoreTokens(httpContext);
+    return Results.Json(new { token = tokens.RequestToken });
 });
 
 // Endpoint to insert data from a file into a database table. Joydig didn't provide an implementation of IAuthorRepository "for brevity". So this won't build as-is.
