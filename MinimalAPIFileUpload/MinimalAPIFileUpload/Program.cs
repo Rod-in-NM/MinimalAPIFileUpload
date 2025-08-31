@@ -1,6 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAntiforgery(); // Add antiforgery services to the container
 
 var app = builder.Build();
 
