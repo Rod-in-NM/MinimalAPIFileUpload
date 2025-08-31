@@ -30,7 +30,7 @@ app.MapPost("/upload", async (IFormFile file) =>
     var tempFile = Path.GetTempFileName();
     using var fileStream = File.OpenWrite(tempFile);
     await file.CopyToAsync(fileStream);
-});
+}).DisableAntiforgery();    // Disable CSRF protection for this endpoint, if you're certain this endpoint is safe and doesn't need CSRF protection
 
 // This endpoint is the way Joydig handles multiple file uploads
 app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
