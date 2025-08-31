@@ -49,7 +49,8 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
 app.MapGet("/generate-antiforgery-token", (IAntiforgery antiforgery, HttpContext httpContext) =>
 {
     var tokens = antiforgery.GetAndStoreTokens(httpContext);
-    return Results.Json(new { token = tokens.RequestToken });
+    var xsrfToken = tokens.RequestToken;
+    return Results.Ok(new { token = xsrfToken });
 });
 
 // Endpoint to insert data from a file into a database table. Joydig didn't provide an implementation of IAuthorRepository "for brevity". So this won't build as-is.
