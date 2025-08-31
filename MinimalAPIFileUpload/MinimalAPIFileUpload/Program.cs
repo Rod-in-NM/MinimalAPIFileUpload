@@ -24,12 +24,23 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
-// This endpoint is the way Joydig wants to handle file uploads
+// This endpoint is the way Joydig handles file uploads
 app.MapPost("/upload", async (IFormFile file) =>
 {
     var tempFile = Path.GetTempFileName();
     using var fileStream = File.OpenWrite(tempFile);
     await file.CopyToAsync(fileStream);
+});
+
+// This endpoint is the way Joydig handles multiple file uploads
+app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
+{
+    foreach (var file in files)
+    {
+        var tempFile = Path.GetTempFileName();
+        using var fileStream = File.OpenWrite(tempFile);
+        await file.CopyToAsync(fileStream);
+    }
 });
 
 app.Run();
