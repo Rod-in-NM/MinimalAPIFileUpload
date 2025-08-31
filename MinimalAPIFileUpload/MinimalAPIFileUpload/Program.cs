@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Antiforgery;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAntiforgery(); // Add antiforgery services to the container
 
 var app = builder.Build();
 
@@ -43,8 +46,16 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
     }
 });
 
+app.MapGet("/generate-antiforgery-token", (IAntiforgery antiforgery, HttpContext httpContext) =>
+{
+    var tokens = antiforgery.GetAndStoreTokens(httpContext);
+    var xsrfToken = tokens.RequestToken;
+    return Results.Ok(new { token = xsrfToken });
+});
+
 // Endpoint to insert data from a file into a database table. Joydig didn't provide an implementation of IAuthorRepository "for brevity". So this won't build as-is.
 // NOTE: This endpoint is commented out to avoid build errors due to the missing IAuthorRepository definition.
+// Reminder: If you uncomment this, ensure that IAuthorRepository is defined somewhere in your project. This is related to issue #4 in the repo.
 //app.MapPost("/author/upload", async (IFormFile file, [FromServices] IAuthorRepository authorRepository) =>
 //{ 
 //    using var streamReader = new StreamReader(file.OpenReadStream());
@@ -53,6 +64,8 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
 //        await authorRepository.Create(streamReader.ReadLine() ?? string.Empty); // added await, as it should be awaited
 //    }
 //});
+
+app.UseAntiforgery(); // Enable antiforgery middleware
 
 app.Run();
 
