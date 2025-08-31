@@ -49,7 +49,7 @@ app.MapPost("/author/upload", async (IFormFile file, [FromServices] IAuthorRepos
     using var streamReader = new StreamReader(file.OpenReadStream());
     while (streamReader.Peek() >= 0)
     {
-        authorRepository.Create(streamReader.ReadLine() ?? string.Empty);
+        await authorRepository.Create(streamReader.ReadLine() ?? string.Empty); // added await, as it should be awaited
     }
 });
 
