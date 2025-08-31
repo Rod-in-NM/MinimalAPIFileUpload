@@ -5,3 +5,7 @@ This project is related to the Infoworld.com article [How to upload files using 
 ## .NET
 
 I'm using .NET 9
+
+## No Swagger UI
+
+Joydip practice is to not include Swagger UI in his samples.
