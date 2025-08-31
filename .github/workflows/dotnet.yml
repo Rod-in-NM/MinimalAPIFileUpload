@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SOLUTION_FILE: 'MinimalAPIFileUpload/MinimalAPIFileUpload.sln'
+      SOLUTION_FILE: MinimalAPIFileUpload/MinimalAPIFileUpload.sln
 
     steps:
     - uses: actions/checkout@v4
