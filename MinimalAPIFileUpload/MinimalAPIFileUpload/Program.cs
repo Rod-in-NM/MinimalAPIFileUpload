@@ -55,6 +55,8 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
 //    }
 //});
 
+app.UseAntiforgery(); // Enable antiforgery middleware
+
 app.Run();
 
 internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
