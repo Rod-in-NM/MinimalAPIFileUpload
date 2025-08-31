@@ -30,7 +30,7 @@ app.MapPost("/upload", async (IFormFile file) =>
     var tempFile = Path.GetTempFileName();
     using var fileStream = File.OpenWrite(tempFile);
     await file.CopyToAsync(fileStream);
-});
+}).DisableAntiforgery();    // Disable CSRF protection for this endpoint, if you're certain this endpoint is safe and doesn't need CSRF protection
 
 // This endpoint is the way Joydig handles multiple file uploads
 app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
@@ -44,14 +44,15 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
 });
 
 // Endpoint to insert data from a file into a database table. Joydig didn't provide an implementation of IAuthorRepository "for brevity". So this won't build as-is.
-app.MapPost("/author/upload", async (IFormFile file, [FromServices] IAuthorRepository authorRepository) =>
-{ 
-    using var streamReader = new StreamReader(file.OpenReadStream());
-    while (streamReader.Peek() >= 0)
-    {
-        authorRepository.Create(streamReader.ReadLine() ?? string.Empty);
-    }
-});
+// NOTE: This endpoint is commented out to avoid build errors due to the missing IAuthorRepository definition.
+//app.MapPost("/author/upload", async (IFormFile file, [FromServices] IAuthorRepository authorRepository) =>
+//{ 
+//    using var streamReader = new StreamReader(file.OpenReadStream());
+//    while (streamReader.Peek() >= 0)
+//    {
+//        await authorRepository.Create(streamReader.ReadLine() ?? string.Empty); // added await, as it should be awaited
+//    }
+//});
 
 app.Run();
 
