@@ -55,6 +55,7 @@ app.MapGet("/generate-antiforgery-token", (IAntiforgery antiforgery, HttpContext
 
 // Endpoint to insert data from a file into a database table. Joydig didn't provide an implementation of IAuthorRepository "for brevity". So this won't build as-is.
 // NOTE: This endpoint is commented out to avoid build errors due to the missing IAuthorRepository definition.
+// Reminder: If you uncomment this, ensure that IAuthorRepository is defined somewhere in your project. This is related to issue #4 in the repo.
 //app.MapPost("/author/upload", async (IFormFile file, [FromServices] IAuthorRepository authorRepository) =>
 //{ 
 //    using var streamReader = new StreamReader(file.OpenReadStream());
