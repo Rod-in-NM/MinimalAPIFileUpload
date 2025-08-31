@@ -43,7 +43,7 @@ app.MapPost("/upload_multiple_files", async (IFormFileCollection files) =>
     }
 });
 
-// Endpoint to insert data from a file into a database table
+// Endpoint to insert data from a file into a database table. Joydig didn't provide an implementation of IAuthorRepository "for brevity". So this won't build as-is.
 app.MapPost("/author/upload", async (IFormFile file, [FromServices] IAuthorRepository authorRepository) =>
 { 
     using var streamReader = new StreamReader(file.OpenReadStream());
